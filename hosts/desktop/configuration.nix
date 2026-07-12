@@ -73,6 +73,7 @@
     packages = with pkgs; [
       tree
     ];
+    shell = pkgs.nushell;
   };
 
   security.sudo = {
@@ -94,6 +95,8 @@
     chezmoi
     home-manager
   ];
+
+  environment.shells = with pkgs; [ nushell ];
   
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
