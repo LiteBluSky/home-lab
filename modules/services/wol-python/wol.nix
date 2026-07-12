@@ -30,7 +30,7 @@ in
           uvicorn
           pydantic
         ]);
-      in "${pythonEnv}/bin/fastapi dev ${./main.py} --host 0.0.0.0 --port 8000";
+      in "${pythonEnv}/bin/uvicorn main:app --app-dir ${./.} --reload --host 0.0.0.0 --port 8000";
 
       Restart = "always";
       RestartSec = "5s";
