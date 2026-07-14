@@ -14,7 +14,7 @@ class WakeRequest(BaseModel):
     mac_address: str = Field(
         default=DEFAULT_MAC, 
         description="The MAC address of the target PC to wake up.",
-        examples=["AA:BB:CC:DD:EE:FF"]
+        examples=[DEFAULT_MAC]
     )
 
     @field_validator('mac_address')
