@@ -69,7 +69,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ryan = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel docker" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       tree
     ];
@@ -113,6 +113,7 @@
     enable = true;
     # settings.PasswordAuthentication = false;
   };
+  virtualisation.docker.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

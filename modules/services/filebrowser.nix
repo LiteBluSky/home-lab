@@ -2,7 +2,7 @@
 
 {
   # Open the port on the host firewall
-  networking.firewall.allowedTCPPorts = [ 8080 ];
+  networking.firewall.allowedTCPPorts = [ 8081 ];
 
   # Native Filebrowser Service
   services.filebrowser = {
@@ -11,7 +11,7 @@
     group = "users";
     settings = {
       address = "0.0.0.0"; # Listens on all interfaces, including Tailscale
-      port = 8080;
+        port = 8081;
       root = "/home/${username}/shared-files";
       # noauth = true;
     };
