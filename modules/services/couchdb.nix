@@ -1,5 +1,6 @@
+{ pkgs, ... }:
+
 {
-  # 1. Enable CouchDB
   services.couchdb = {
     enable = true;
     package = pkgs.couchdb3;
