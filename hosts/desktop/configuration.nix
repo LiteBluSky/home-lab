@@ -17,6 +17,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
+  # Disable NetworkManager's built-in Wi-Fi powersave
+  networking.networkmanager.wifi.powersave = false;
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
