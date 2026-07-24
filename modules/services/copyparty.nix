@@ -11,7 +11,7 @@
     wantedBy = [ "multi-user.target" ];
     
     serviceConfig = {
-      ExecStart = "${pkgs.copyparty}/bin/copyparty -v /home/${username}/shared-files::rw";
+      ExecStart = "${pkgs.copyparty}/bin/copyparty --ftp 3921 -v /home/${username}/shared-files::rw";
       Restart = "always";
       User = username;
     };
