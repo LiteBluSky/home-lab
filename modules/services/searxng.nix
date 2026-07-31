@@ -16,7 +16,7 @@
         # Bind locally if you plan to put Nginx/Caddy in front of it (Recommended)
         bind_address = "127.0.0.1";
         port = 8888;
-        base_url = "https://nixos.kooka-pence.ts.net"; # Change to your actual domain
+        base_url = "https://nixos.kooka-pence.ts.net/searx/"; # Change to your actual domain
         secret_key = "@SEARXNG_SECRET@";        # References the variable in environmentFile
       };
       

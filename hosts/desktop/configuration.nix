@@ -44,7 +44,7 @@
     enable = true;
     windowManager.qtile.enable = true; 
   };
-  services.tailscale.enable = true;
+  # services.tailscale.enable = true;
   services.logind.settings = {
     Login = {
       HandleLidSwitch = "ignore";
