@@ -18,6 +18,9 @@
 
         # 3. Map Actual Budget (local port 5006) to HTTPS port 9443
         ${pkgs.tailscale}/bin/tailscale serve --bg --https=9443 http://127.0.0.1:5006
+
+        # 3. Map Actual Budget (local port 5230) to HTTPS port 9444
+        ${pkgs.tailscale}/bin/tailscale serve --bg --https=9444 http://127.0.0.1:5230
       '';
     };
   };
