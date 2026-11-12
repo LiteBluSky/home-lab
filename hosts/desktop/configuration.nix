@@ -15,6 +15,8 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+
 
   networking.hostName = "nixos"; # Define your hostname.
   # Disable NetworkManager's built-in Wi-Fi powersave
