@@ -18,6 +18,6 @@
   # The container runs as the image's `node` user (uid 1000).
   systemd.tmpfiles.rules = [ "d /var/lib/essentials 0750 1000 1000 -" ];
 
-  # Reach it from other devices on the LAN.
+  # Reach it from other devices on the LAN (Tailscale https: see apps.nix).
   networking.firewall.allowedTCPPorts = [ 8008 ];
 }

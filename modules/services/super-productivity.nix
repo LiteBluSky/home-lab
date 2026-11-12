@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  virtualisation.oci-containers.backend = "docker";
-  
   virtualisation.oci-containers.containers.super-productivity = {
     image = "johannesjo/super-productivity:latest";
     ports = [ "11500:80" ];

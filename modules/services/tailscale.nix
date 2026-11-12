@@ -1,7 +1,18 @@
-{ config, pkgs, ... }: {
+# Tailscale, plus https on the tailnet for every app in apps.nix that has an
+# `https` port, and the homepage on https://nixos.kooka-pence.ts.net.
+# An app whose https port is the same as its own port must not listen on
+# 0.0.0.0, or the two clash (see essentials.nix).
+{ pkgs, lib, ... }:
+let
+  inherit (import ./apps.nix) apps;
+  tailscale = "${pkgs.tailscale}/bin/tailscale";
+  served = builtins.filter (app: (app.https or null) != null) apps;
+  serve = app:
+    "${tailscale} serve --bg --https=${toString app.https} http://127.0.0.1:${toString app.port}  # ${app.name}";
+in
+{
   services.tailscale.enable = true;
 
-  # Create a systemd service to configure tailscale serve ports automatically
   systemd.services.tailscale-serve = {
     description = "Configure Tailscale Serve ports";
     after = [ "tailscaled.service" "network-online.target" ];
@@ -9,24 +20,13 @@
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = pkgs.writeShellScript "ts-serve-config" ''
-        # 1. Reset existing configuration to avoid residual state
-        ${pkgs.tailscale}/bin/tailscale serve reset
-
-        # 2. Map SearXNG (local port 8888) to HTTPS port 8443
-        ${pkgs.tailscale}/bin/tailscale serve --bg --https=8443 http://127.0.0.1:8888
-
-        # 3. Map Actual Budget (local port 5006) to HTTPS port 9443
-        ${pkgs.tailscale}/bin/tailscale serve --bg --https=9443 http://127.0.0.1:5006
-
-        # 3. Map Actual Budget (local port 5230) to HTTPS port 9444
-        ${pkgs.tailscale}/bin/tailscale serve --bg --https=9444 http://127.0.0.1:5230
-
-	      # 3. Map Actual Budget (local port 5230) to HTTPS port 9444
-        ${pkgs.tailscale}/bin/tailscale serve --bg --https=9445 http://127.0.0.1:2283
-
-        ${pkgs.tailscale}/bin/tailscale serve --bg --https=8008 http://127.0.0.1:8008
-     '';
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "tailscale-serve" ''
+        set -e
+        ${tailscale} serve reset
+        ${tailscale} serve --bg --https=443 http://127.0.0.1:80  # homepage
+        ${lib.concatMapStringsSep "\n" serve served}
+      '';
     };
   };
 }

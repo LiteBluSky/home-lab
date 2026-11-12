@@ -1,87 +1,53 @@
-# Homeserver Configuration
+# Home server
 
-A NixOS-based homeserver configuration utilizing Nix Flakes.
+NixOS configuration for the home server (`nixos`, 192.168.0.17).
+Homepage with every app: http://192.168.0.17 (LAN) or
+https://nixos.kooka-pence.ts.net (Tailscale).
 
----
-
-## 📂 Repository Structure
-
-- `hosts/desktop/` — Host-specific configuration for the primary system.
-- `modules/services/` — Reusable modules for deploying various homeserver services.
-- `flake.nix` & `flake.lock` — Core Nix Flake configuration and pinned dependency versions.
-
----
-
-# 🚀 Getting Started / Installation
-
-> **⚠️ Warning**
->
-> Before applying this configuration to a machine, review the hardware configuration and settings inside `hosts/desktop/` to ensure compatibility.
-
-## 1. Clone the Repository
-
-Clone the repository and enter the project directory:
-
-```bash
-git clone git@github.com:LiteBluSky/homeserver.git ~/.dotfiles
-cd ~/.dotfiles
-```
-
-## 2. Verify the Flake
-
-Validate the flake and ensure all outputs evaluate correctly:
-
-```bash
-nix flake check
-```
-
-## 3. Deploy / Rebuild the Configuration
-
-### Test the configuration
-
-Test the configuration without making it the default boot configuration:
-
-```bash
-sudo nixos-rebuild test --flake .#desktop
-```
-
-### Apply the configuration permanently
-
-Build, activate, and make the configuration persistent:
-
-```bash
-sudo nixos-rebuild switch --flake .#desktop
-```
-
----
-
-# 🛠️ Managing Services
-
-New homeserver services should be created inside:
+## Layout
 
 ```text
+flake.nix                    # entry point (pins nixpkgs)
+hosts/nixos/                 # this machine: boot, network, users, packages
 modules/services/
+  default.nix                # which services are on (comment a line to turn one off)
+  apps.nix                   # every app with its ports -> homepage + Tailscale https
+  homepage.nix               # the homepage (nginx on port 80)
+  tailscale.nix              # Tailscale + https ports, generated from apps.nix
+  <app>.nix                  # one file per app
 ```
 
-Then import the module into your host configuration under:
+App data lives in `/var/lib/<app>`; shared files in `~/shared-files`.
 
-```text
-hosts/desktop/
-```
-
-### After Making Changes
-
-If you've added new files, remember to stage them before rebuilding. Nix Flakes only include files tracked by Git.
+## Apply changes
 
 ```bash
-git add .
-sudo nixos-rebuild switch --flake .#desktop
+rebuild          # = git add -A && sudo nixos-rebuild switch --flake ~/.dotfiles
 ```
 
----
+Not sure? `sudo nixos-rebuild test --flake ~/.dotfiles` applies it until the
+next reboot only. Something broke? Pick the previous generation in the boot
+menu, or `sudo nixos-rebuild switch --rollback`.
 
-# 📌 Notes
+## Add an app
 
-- Keep `flake.lock` committed to ensure reproducible builds.
-- Run `nix flake check` before switching configurations whenever possible.
-- Review hardware-specific settings before deploying to a different machine.
+1. Create `modules/services/<app>.nix` (copy a similar one: a NixOS service
+   like `memos.nix`, or a Docker image like `essentials.nix`).
+2. Add it to `imports` in `modules/services/default.nix`.
+3. Add it to `apps.nix` (name, port, description; `https` for a Tailscale
+   https port). Pick a port that's free: `ss -ltn`.
+4. `rebuild`, then commit.
+
+## Update
+
+- Everything (NixOS + apps from nixpkgs): `nix flake update --flake ~/.dotfiles`, then `rebuild`.
+- A Docker app on `:latest` (e.g. Essentials, which has `pull = "always"`):
+  `sudo systemctl restart docker-essentials`.
+
+## Your user's tools (Home Manager)
+
+Separate from this repo, in `~/.config/home-manager` (managed by chezmoi):
+
+```bash
+home-manager switch --flake ~/.config/home-manager
+```

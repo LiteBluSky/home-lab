@@ -1,9 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  virtualisation.docker.enable = true;
-
-  virtualisation.oci-containers.backend = "docker";
   virtualisation.oci-containers.containers.actual-budget = {
     image = "docker.io/actualbudget/actual-server:latest";
     autoStart = true; # Replaced 'restart = "always"' with this

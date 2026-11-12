@@ -99,6 +99,15 @@
     btop
     chezmoi
     home-manager
+
+    # `rebuild`: apply ~/.dotfiles (stages new files first; flakes ignore
+    # untracked ones). Extra arguments go to nixos-rebuild.
+    (writeShellScriptBin "rebuild" ''
+      set -e
+      cd /home/ryan/.dotfiles
+      git add -A
+      sudo nixos-rebuild switch --flake /home/ryan/.dotfiles "$@"
+    '')
   ];
 
   environment.shells = with pkgs; [ nushell ];
