@@ -32,7 +32,7 @@ menu, or `sudo nixos-rebuild switch --rollback`.
 ## Add an app
 
 1. Create `modules/services/<app>.nix` (copy a similar one: a NixOS service
-   like `memos.nix`, or a Docker image like `essentials.nix`).
+   like `immich.nix`, or a Docker image like `essentials.nix`).
 2. Add it to `imports` in `modules/services/default.nix`.
 3. Add it to `apps.nix` (name, port, description; `https` for a Tailscale
    https port). Pick a port that's free: `ss -ltn`.

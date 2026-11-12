@@ -13,13 +13,10 @@
 
     ./essentials.nix
     ./immich.nix
-    ./memos.nix
     ./actual-server.nix
     ./searxng.nix
-    ./super-productivity.nix
     ./filebrowser.nix
     ./copyparty.nix
-    ./dufs.nix
     ./beszel.nix
     ./couchdb.nix
     ./wol-python/wol.nix

@@ -14,13 +14,10 @@
   apps = [
     { name = "Essentials";         port = 8008;  https = 8008; description = "Bookmarks, notes, tasks and contacts"; }
     { name = "Immich";             port = 2283;  https = 9445; description = "Photos and videos"; }
-    { name = "Memos";              port = 5230;  https = 9444; description = "Quick notes"; }
     { name = "Actual Budget";      port = 5006;  https = 9443; description = "Budgeting"; }
     { name = "SearXNG";            port = 8888;  https = 8443; lan = false; description = "Private web search"; }
-    { name = "Super Productivity"; port = 11500; description = "To-dos and time tracking"; }
     { name = "File Browser";       port = 8081;  description = "Browse ~/shared-files"; }
     { name = "Copyparty";          port = 3923;  description = "File sharing (FTP on port 3921)"; }
-    { name = "Dufs";               port = 5030;  description = "File server and WebDAV"; }
     { name = "Beszel";             port = 8090;  description = "Server monitoring"; }
     { name = "CouchDB";            port = 5984;  path = "/_utils"; description = "Database (Fauxton admin)"; }
     { name = "Wake on LAN";        port = 8000;  path = "/docs"; description = "Wake-on-LAN API"; }
